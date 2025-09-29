@@ -35,7 +35,7 @@ export default function AppLayout() {
           <Loaders />
         </div>
       ) : (
-        <section className="max-w-screen-lg mx-auto mt-4 md:mt-6 lg:mt-10 p-5">
+        <section className="max-w-screen-xl mx-auto mt-2 md:mt-4 lg:mt-6 p-4 lg:p-8">
           <Outlet />
         </section>
       )}

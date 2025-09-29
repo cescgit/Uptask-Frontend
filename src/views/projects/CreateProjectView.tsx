@@ -28,9 +28,9 @@ export default function CreateProjectView() {
     onError: (error) => {
       toast.error(error.message);
     },
-    onSuccess: (data) => {                  
-        toast.success(data);
-        navigate("/");
+    onSuccess: (data) => {
+      toast.success(data);
+      navigate("/");
     },
   });
 
@@ -52,7 +52,7 @@ export default function CreateProjectView() {
       if (result.isConfirmed) {
         mutate(formData);
       }
-    });  
+    });
   };
 
   const token = localStorage.getItem("authTokenUpTask") || null;
@@ -61,24 +61,26 @@ export default function CreateProjectView() {
     <>
       {token ? (
         <>
-          <h1 className="text-4xl font-black">Crear proyecto</h1>
-          <p className="md:text-xl text-lg font-light text-gray-500 mb-4">
-            Llena el siguiente formulario para crear un proyecto
-          </p>
-          <div className="md:w-[34%] w-full">
-            <Link
-              className="bg-gray-800 hover:bg-gray-900 py-2 px-4 text-white text-lg font-bold cursor-pointer transition-colors duration-200 rounded-md flex items-center gap-4 justify-center w-full"
-              to="/"
-            >
-              Volver a proyectos
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                className="fill-white size-6"
+          <div className="flex items-start justify-center flex-col max-w-2xl mx-auto">
+            <h1 className="text-4xl font-black">Crear proyecto</h1>
+            <p className="md:text-xl text-lg font-light text-gray-500 mb-4">
+              Llena el siguiente formulario para crear un proyecto
+            </p>
+            <div className="md:w-[34%] w-full">
+              <Link
+                className="bg-gray-800 hover:bg-gray-900 py-2 px-4 text-white text-lg font-bold cursor-pointer transition-colors duration-200 rounded-md flex items-center gap-4 justify-center w-full"
+                to="/"
               >
-                <path d="m9 18l-6-6l6-6l1.4 1.4L6.8 11H19V7h2v6H6.8l3.6 3.6z"></path>
-              </svg>
-            </Link>
+                Volver a proyectos
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  className="fill-white size-6"
+                >
+                  <path d="m9 18l-6-6l6-6l1.4 1.4L6.8 11H19V7h2v6H6.8l3.6 3.6z"></path>
+                </svg>
+              </Link>
+            </div>
           </div>
           <div className="max-w-2xl mx-auto">
             <form
@@ -111,12 +113,12 @@ export default function CreateProjectView() {
             to="/auth/login"
           >
             <svg
-              xmlns="http://www.w3.org/2000/svg"             
+              xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 14 14"
               className="size-5 stroke-white"
             >
               <g
-                fill="none"                
+                fill="none"
                 stroke-linecap="round"
                 stroke-linejoin="round"
               >
