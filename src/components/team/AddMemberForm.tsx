@@ -5,7 +5,7 @@ import ErrorMessage from "../ErrorMessage";
 import type { TeamMemberForm } from "@/types/index";
 import { findUserByEmail } from "@/api/TeamAPI";
 import Loaders from "../Loaders";
-import ImageEmpty from "../imageUI/ImageEmpty";
+import SearchResult from "./SearchResult";
 
 export default function AddMemberForm() {
   const initialValues: TeamMemberForm = {
@@ -28,10 +28,12 @@ export default function AddMemberForm() {
   const handleSearchUser = async (formData: TeamMemberForm) => {
     const data = { projectId, formData }
     mutation.mutate(data);
-    console.log(data)
-
-    console.log(mutation);
   };
+
+  const resetData = () => {
+    reset();
+    mutation.reset();
+  }
 
   return (
     <>
@@ -75,6 +77,7 @@ export default function AddMemberForm() {
             <p className="text-center text-red-500 uppercase">{mutation.error.message}</p>
           )
         }
+        {mutation.data && (<SearchResult user={mutation.data} reset={resetData} />)}
       </div>
     </>
   );

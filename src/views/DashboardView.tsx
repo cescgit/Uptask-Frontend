@@ -9,18 +9,21 @@ import ProjectsEmpty from "@/components/ui-notfound/ProjectsEmpty";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { useAuth } from "@/hooks/useAuth";
 
 const MySwal = withReactContent(Swal);
 
 export default function DashboardView() {
+
+  const { data: dataAuth, isLoading: isLoadingAuth } = useAuth();
+
   const { data, isLoading } = useQuery({
     queryKey: ["projects"],
     queryFn: getProjects,
   });
 
-  const queryClient =  useQueryClient()
-
-  const {mutate} = useMutation({
+  const queryClient = useQueryClient()
+  const { mutate } = useMutation({
     mutationFn: deleteProject,
     onError: (error) => {
       toast.error(error.message)
@@ -33,12 +36,12 @@ export default function DashboardView() {
 
   return (
     <>
-      <div className="sticky md:top-40 top-44 bg-white left-0">
+      <div className="sticky md:top-10 top-20 bg-white left-0 p-4">
         <h1 className="md:text-4xl text-3xl font-black">Mis proyectos</h1>
         <p className="md:text-xl text-lg font-light text-gray-500 mb-4">
           Maneja y administra tus proyectos
         </p>
-        
+
         <div className="md:w-[30%] w-full">
           <Link
             className="bg-gray-800 hover:bg-gray-900 py-2 px-4 text-white text-lg font-bold cursor-pointer transition-colors duration-200 rounded-md flex items-center gap-4 justify-center w-full"
@@ -57,7 +60,7 @@ export default function DashboardView() {
       </div>
 
       <div>
-        {isLoading ? (
+        {isLoading && isLoadingAuth ? (
           <div className="flex items-center md:my-40 my-16 justify-center">
             <Loaders />
           </div>
@@ -122,44 +125,52 @@ export default function DashboardView() {
                                 Ver Proyecto
                               </Link>
                             </Menu.Item>
-                            <Menu.Item>
-                              <Link
-                                to={`/projects/${project._id}/edit`}
-                                className="block px-3 py-1 text-sm leading-6 text-gray-900"
-                              >
-                                Editar Proyecto
-                              </Link>
-                            </Menu.Item>
-                            <Menu.Item>
-                              <button
-                                type="button"
-                                className="block px-3 py-1 text-sm leading-6 text-red-500"
-                                onClick={() => {
-                                  MySwal.fire({
-                                    title: "Eliminar proyecto",
-                                    html: `
+                            {
+                              project.manager === dataAuth?._id
+                              &&
+                              (
+                                <>
+                                  <Menu.Item>
+                                    <Link
+                                      to={`/projects/${project._id}/edit`}
+                                      className="block px-3 py-1 text-sm leading-6 text-gray-900"
+                                    >
+                                      Editar Proyecto
+                                    </Link>
+                                  </Menu.Item>
+                                  <Menu.Item>
+                                    <button
+                                      type="button"
+                                      className="block px-3 py-1 text-sm leading-6 text-red-500"
+                                      onClick={() => {
+                                        MySwal.fire({
+                                          title: "Eliminar proyecto",
+                                          html: `
                                       <p class="text-lg text-gray-600 text-center">
                                         ¿Seguro deseas eliminar el proyecto
                                         <span class="font-bold text-gray-900">${project.projectName}</span>?
                                       </p>
                                     `,
-                                    text: "Si eliminas el proyecto no podras revertirlo",
-                                    icon: "warning",
-                                    showCancelButton: true,
-                                    cancelButtonColor: "#d33",
-                                    cancelButtonText: "No, eliminar!",
-                                    confirmButtonColor: "#3085d6",
-                                    confirmButtonText: "Si, eliminarlo!",
-                                  }).then((result) => {
-                                    if (result.isConfirmed) {
-                                      mutate(project._id);
-                                    }
-                                  });
-                                }}
-                              >
-                                Eliminar Proyecto
-                              </button>
-                            </Menu.Item>
+                                          text: "Si eliminas el proyecto no podras revertirlo",
+                                          icon: "warning",
+                                          showCancelButton: true,
+                                          cancelButtonColor: "#d33",
+                                          cancelButtonText: "No, eliminar!",
+                                          confirmButtonColor: "#3085d6",
+                                          confirmButtonText: "Si, eliminarlo!",
+                                        }).then((result) => {
+                                          if (result.isConfirmed) {
+                                            mutate(project._id);
+                                          }
+                                        });
+                                      }}
+                                    >
+                                      Eliminar Proyecto
+                                    </button>
+                                  </Menu.Item>
+                                </>
+                              )
+                            }
                           </Menu.Items>
                         </Transition>
                       </Menu>
